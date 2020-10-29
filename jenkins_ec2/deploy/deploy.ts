@@ -46,4 +46,4 @@ class S3ui extends cdk.Stack {
 };
 
 const app = new cdk.App();
-new S3ui(app, 'HelloWordReactStack');
+new S3ui(app, 'LawanginKhanReactStack');
