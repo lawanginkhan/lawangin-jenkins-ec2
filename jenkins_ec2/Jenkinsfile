@@ -1,0 +1,48 @@
+pipeline {
+    agent any
+    options { 
+        disableConcurrentBuilds() 
+        buildDiscarder(logRotator(numToKeepStr: '30'))
+    }
+    parameters {
+        booleanParam(name: 'CDK', defaultValue: true, description: 'run cdk')
+        booleanParam(name: 'S3', defaultValue: true, description: 'push to s3')
+    }
+    stages {
+        stage('set description') {
+            steps {
+                script {
+                    currentBuild.description = sh(script: 'git log -1 --pretty=%B', returnStdout: true)
+                }
+            }
+        }
+        stage('cdk') {
+            when {
+                expression { params.CDK }
+            }
+            steps {
+                script  {
+                    sh """
+                        cd deploy
+                        npm ci
+                        npx cdk deploy --require-approval never
+                    """
+                }
+            }
+        }
+        stage('build') {
+            when {
+                expression { params.S3 && build }
+            }
+            steps {
+                script  {
+                    sh """
+                        cd app
+                        npm ci
+                        npm run build
+                    """
+                }
+            }
+        }
+    }
+}
