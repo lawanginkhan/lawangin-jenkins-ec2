@@ -16,7 +16,7 @@ pipeline {
             steps {
                 script  {
                     sh """
-                        cd ${WORKSPACE}/jenkins_ec2/app
+                        cd jenkins_ec2/app
                         npm ci
                         npm run build
                     """
@@ -27,7 +27,7 @@ pipeline {
             steps {
                 script  {
                     sh """
-                        cd ${WORKSPACE}/jenkins_ec2/deploy
+                        cd jenkins_ec2/deploy
                         npm ci
                         npx cdk deploy --require-approval never
                     """
