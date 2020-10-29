@@ -29,6 +29,7 @@ pipeline {
                     sh """
                         cd jenkins_ec2/deploy
                         npm ci
+                        npx cdk bootstrap
                         npx cdk deploy --require-approval never
                     """
                 }
