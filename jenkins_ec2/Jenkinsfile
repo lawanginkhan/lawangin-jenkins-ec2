@@ -17,7 +17,7 @@ pipeline {
                 script  {
                     sh """
                         cd jenkins_ec2/app
-                        npm ci
+                        npm install
                         npm run build
                     """
                 }
@@ -28,7 +28,7 @@ pipeline {
                 script  {
                     sh """
                         cd jenkins_ec2/deploy
-                        npm ci
+                        npm install
                         npx cdk bootstrap
                         npx cdk deploy --require-approval never
                     """
